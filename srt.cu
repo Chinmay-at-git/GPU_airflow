@@ -463,6 +463,7 @@ cudaDeviceSynchronize();
 sprintf(buf,"%s/vfield.%d.vtk","vdir",iteration);
 
 fptr=fopen(buf,"w");
+printf("\nBuf=%sfptr=%d\n",buf,fptr);
 write_vtk_header(fptr,buf);
 
 vptr = vfield;
