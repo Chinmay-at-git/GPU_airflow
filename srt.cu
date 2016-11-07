@@ -212,7 +212,7 @@ fprintf(stderr,"finding object boundary\n");
 fprintf(stderr,"PASS 1\n");
 slot = 0;
 for(itri=0;itri<fcount;itri++){
-	if(itri%1000==0) fprintf(stderr,"%d/%d done\n",itri,fcount);
+	if(itri%10==0) fprintf(stderr,"%d/%d done\n",itri,fcount);
 	maxx = minx = trilist[itri].v0.x;
 	maxy = miny = trilist[itri].v0.y;
 	maxz = minz = trilist[itri].v0.z;
@@ -281,7 +281,7 @@ for(i=0;i<NODES;i++) host_rindex[i] = -1;
 fprintf(stderr,"PASS 2\n");
 slot = 0;
 for(itri=0;itri<fcount;itri++){
-	if(itri%1000==0) fprintf(stderr,"%d/%d done\n",itri,fcount);
+	if(itri%10==0) fprintf(stderr,"%d/%d done\n",itri,fcount);
 	maxx = minx = trilist[itri].v0.x;
 	maxy = miny = trilist[itri].v0.y;
 	maxz = minz = trilist[itri].v0.z;
@@ -502,6 +502,7 @@ pad = (rvcount/LWS+1);
 to = 0;
 from = 1;
 for(t=1;t<=FINAL_TIME;t++){
+	printf("\nDone t=%d/%d",t,FINAL_TIME);
 	cudaDeviceSynchronize();
 	cascade<<<cascade_ws,cascade_lws>>>(f[to],f[from],dev_nclass);
 	cudaMemcpy(f[from],f[to],FLOWS*sizeof(float),cudaMemcpyDefault); 
@@ -530,15 +531,15 @@ long long bytes = 0;
 cudaError_t err;
 
 err = cudaMalloc(&f[0],FLOWS*sizeof(float));
-if(!(err==cudaSuccess)) fprintf(stderr,"cudaMalloc f[0] failed\n");
+if(!(err==cudaSuccess)) fprintf(stderr,"cudaMalloc f[0] failed size=%d\n",FLOWS*sizeof(float));
 cudaMemcpy(f[0],&host_f[0],FLOWS*sizeof(float),cudaMemcpyDefault);
 
 err = cudaMalloc(&f[1],FLOWS*sizeof(float));
-if(!(err==cudaSuccess)) fprintf(stderr,"cudaMalloc f[1] failed\n");
+if(!(err==cudaSuccess)) fprintf(stderr,"cudaMalloc f[1] failed size=%d\n",FLOWS*sizeof(float));
 cudaMemcpy(f[1],&host_f[0],FLOWS*sizeof(float), cudaMemcpyDefault);
 
 bytes += 2*((long long)(FLOWS*sizeof(float)));
-
+fprintf(stderr,"Flows=: %lld\n",bytes);
 err = cudaMalloc(&dev_bounce,revcount*sizeof(rrnode));
 if(!(err==cudaSuccess)) fprintf(stderr,"cudaMalloc dev_bounce failed\n");
 cudaMemcpy(dev_bounce,host_bounce,revcount*sizeof(rrnode),cudaMemcpyDefault);
@@ -550,7 +551,7 @@ if(!(err==cudaSuccess)) fprintf(stderr,"cudaMalloc dev_nclass failed\n");
 cudaMemcpy(dev_nclass,nclass,NODES*sizeof(unsigned char),cudaMemcpyDefault);
 
 bytes += NODES*sizeof(unsigned char);
-
+fprintf(stderr,"Nodes: %lld\n",NODES);
 fprintf(stderr,"total allocated card memory: %lld\n",bytes);
 }
 
@@ -748,8 +749,9 @@ revcount = find_boundary_nodes(tricount);
 
 flood_fill();
 init_lattice();
-fprintf(stderr,"allocating buffers\n");
+fprintf(stderr,"allocating buffers revcount=%d\n",revcount);
 buffers(revcount);
+fprintf(stderr,"allocated buffers\n");
 go(revcount);
 cleanup(SIGUSR1);
 return(0);

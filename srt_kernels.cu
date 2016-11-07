@@ -47,7 +47,7 @@ return;
 
 __device__ double get_equilibrium(double rho, struct rvector u, int m)
 {
-return rho/m;
+return 0;
 }
 
 
