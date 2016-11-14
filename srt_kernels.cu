@@ -47,7 +47,9 @@ return;
 
 __device__ double get_equilibrium(double rho, struct rvector u, int m)
 {
-return 0;
+	double ddot;
+	ddot = dotci(m, u);
+	return(link_weight[m]*rho*(1.0+3.0*ddot+4.5*ddot*ddot-1.5*dot(u,u)));
 }
 
 
