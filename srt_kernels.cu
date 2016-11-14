@@ -42,6 +42,24 @@ return(rdot(thisci,u));
 __device__ void get_rho_u(float *to, int i, int j, int k, double *rhoptr, 
 	struct rvector *uptr)
 {
+//void host_get_u(float *hf,int i,int j,int k,double *rptr, struct rvector *uptr)
+//{
+int m;
+double rho = 0.0;
+struct rvector mo, u;
+
+for(m=0;m<DIRECTIONS;m++) rho += (float)(to[store(i,j,k,m)]);
+mo.x = mo.y = mo.z = 0.0;
+for(m=0;m<DIRECTIONS;m++){
+        mo.x += host_ci[m].x*(float)(to[store(i,j,k,m)]);
+        mo.y += host_ci[m].y*(float)(to[store(i,j,k,m)]);
+        mo.z += host_ci[m].z*(float)(to[store(i,j,k,m)]);
+        }
+u.x = mo.x/rho;
+u.y = mo.y/rho;
+u.z = mo.z/rho;
+*rhoptr = rho;
+*uptr = u;
 return;
 }
 
