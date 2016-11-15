@@ -63,9 +63,9 @@ u.z = mo.z/rho;
 return;
 }
 
-__device__ double get_equilibrium(double rho, struct rvector u, int m)
+__device__ float get_equilibrium(float rho, struct rvector u, int m)
 {
-	double ddot;
+	float ddot;
 	ddot = dotci(m, u);
 	return(link_weight[m]*rho*(1.0+3.0*ddot+4.5*ddot*ddot-1.5*rdot(u,u)));
 }

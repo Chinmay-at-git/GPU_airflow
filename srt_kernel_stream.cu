@@ -11,7 +11,7 @@ __global__ void stream(float* to, float* from, unsigned char *ncls)
 			y = j - ci[l].y;
 			z = k - ci[l].z;
 			if(LEGAL(x,y,z))
-				to[store(i,j,k,m)] = from[store(x,y,z,m)];
+				to[store(i,j,k,l)] = from[store(x,y,z,l)];
 		}
 		
 	}
