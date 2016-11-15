@@ -508,7 +508,7 @@ for(t=1;t<=FINAL_TIME;t++){
 	cascade<<<cascade_ws,cascade_lws>>>(f[to],f[from],dev_nclass);
 	cudaMemcpy(f[from],f[to],FLOWS*sizeof(float),cudaMemcpyDefault); 
 	// This one has a 1D grid:
-	//bounce<<<pad,LWS>>>(f[to],f[from],dev_bounce,dev_nclass,rvcount);
+	bounce<<<pad,LWS>>>(f[to],f[from],dev_bounce,dev_nclass,rvcount);
 	stream<<<stream_ws,stream_lws>>>(f[from],f[to],dev_nclass);  
 
         if(t>=V_DUMP_START && (t%V_DUMP_INTERVAL)==0){
