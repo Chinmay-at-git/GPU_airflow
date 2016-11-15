@@ -7,7 +7,7 @@ __global__ void bounce(float* to, float* from, rrnode *dev_bounce,
 	j = get_global_id(1);
 	k = get_global_id(2);
 
-	if(ncls[cstore(i,j,k)] == BOUNDRY ){
+	if(ncls[cstore(i,j,k)] == BOUNDARY ){
 		
 		for(int l=0;l<DIRECTIONS;++l){
 			{

@@ -1,9 +1,7 @@
 //...............................................................
 // srt_kernels.cu (starter kit)
 //
-#include "srt_kernel_stream.cu"
-#include "srt_kernel_bounce.cu"
-#include "srt_kernel_cascade.cu"
+
 __device__ __forceinline__ int get_global_id(int idx)
 {
 switch(idx){
@@ -51,9 +49,9 @@ struct rvector mo, u;
 for(m=0;m<DIRECTIONS;m++) rho += (float)(to[store(i,j,k,m)]);
 mo.x = mo.y = mo.z = 0.0;
 for(m=0;m<DIRECTIONS;m++){
-        mo.x += host_ci[m].x*(float)(to[store(i,j,k,m)]);
-        mo.y += host_ci[m].y*(float)(to[store(i,j,k,m)]);
-        mo.z += host_ci[m].z*(float)(to[store(i,j,k,m)]);
+        mo.x += ci[m].x*(float)(to[store(i,j,k,m)]);
+        mo.y += ci[m].y*(float)(to[store(i,j,k,m)]);
+        mo.z += ci[m].z*(float)(to[store(i,j,k,m)]);
         }
 u.x = mo.x/rho;
 u.y = mo.y/rho;
@@ -69,5 +67,7 @@ __device__ float get_equilibrium(float rho, struct rvector u, int m)
 	ddot = dotci(m, u);
 	return(link_weight[m]*rho*(1.0+3.0*ddot+4.5*ddot*ddot-1.5*rdot(u,u)));
 }
-
+#include "srt_kernel_stream.cu"
+#include "srt_kernel_bounce.cu"
+#include "srt_kernel_cascade.cu"
 
