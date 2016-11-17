@@ -15,14 +15,14 @@ __global__ void bounce(float* to, float* from, rrnode *dev_bounce,
 	
 	
 	for(int l=0;l<DIRECTIONS;++l){
-		
+		if(dev_bounce[n].del[l] > -1){
 			x = i - ci[l].x;
 			y = j - ci[l].y;
 			z = k - ci[l].z; 
 			if(ncls[cstore(x,y,z)]==FFLOW){
-				to[store(x,y,z,opp[l])] = -from[store(x,y,z,l)];
-			}	
-		
+				to[store(x,y,z,opp[l])] = from[store(x,y,z,l)];
+			}
+		}	
 	}
 		
 		
