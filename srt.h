@@ -12,8 +12,8 @@
 
 // Defaults.  Override with .config.
 int FINAL_TIME = 20000;
-int V_DUMP_START = 100;
-int V_DUMP_INTERVAL = 100;
+int V_DUMP_START = 1;
+int V_DUMP_INTERVAL = 5;
 
 #define SLICE (DEPTH/2) 
 #define LWS 128
