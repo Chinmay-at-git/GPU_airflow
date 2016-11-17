@@ -15,7 +15,7 @@ __global__ void cascade(float* to, float* from, unsigned char *ncls)
 	
 				float equi=get_equilibrium(rhoptr,uptr, l);
 				
-				float curr_value= from[store(x,y,z,l)];
+				float curr_value= from[store(i,j,k,l)];
 				float sub =  omega* (curr_value - equi ); 
 				to[store(i,j,k,l)] = curr_value - sub ;
 				
